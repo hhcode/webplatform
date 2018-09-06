@@ -11,8 +11,18 @@
 ## spring-boot
 
 * Configuration
+* EnableAutoConfiguration
+* ComponentScan
+* SpringBootApplication
+* RestController
+* RequestMapping
+
 
 ## apollo
+
+* apollo-env.properties
+* -Denv=dev
+* EnableApolloConfig
 
 
 ## eurake

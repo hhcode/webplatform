@@ -1,6 +1,7 @@
 package com.huang.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -11,8 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/rest")
 public class RestDemo {
 
-    @RequestMapping("/home")
-    public String home(){
+    @RequestMapping(value = "/home", method = RequestMethod.GET)
+    public String home() {
         return "Hello World !";
     }
 }
