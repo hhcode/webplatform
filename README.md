@@ -30,6 +30,13 @@
 
 ## redis
 
+* StringRedisTemplate
+```
+spring.redis.host
+spring.redis.port
+spring.redis.password
+spring.redis.database
+```
 
 ## mysql
 
