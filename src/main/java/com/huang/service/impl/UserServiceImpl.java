@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
     public void userPut(UserEntity userEntity) {
         int update = userMapper.update(userEntity);
         if (update == 1) {
-            UserEntity newEntity = userGet(userEntity);
+            UserEntity newEntity = userMapper.query(userEntity);
             cacheServer.setObject(userEntity.getUserName(), newEntity);
         }
     }
@@ -43,7 +43,8 @@ public class UserServiceImpl implements UserService {
     public void userPost(UserEntity userEntity) {
         int insert = userMapper.insert(userEntity);
         if (insert == 1) {
-            cacheServer.setObject(userEntity.getUserName(), userEntity);
+            UserEntity newEntity = userMapper.query(userEntity);
+            cacheServer.setObject(userEntity.getUserName(), newEntity);
         }
     }
 
