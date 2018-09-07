@@ -1,12 +1,13 @@
 ## 使用的技术点
 1. springboot
 2. apollo
-3. eurake
-4. redis
-5. mysql master-slave
-6. rocketmq-consumer producter
-7. log aop
-8. Hibernate Validator
+3. logback
+4. eurake
+5. redis
+6. mysql master-slave
+7. rocketmq-consumer producter
+8. log aop
+9. Hibernate Validator
 
 ## spring-boot
 
@@ -17,6 +18,8 @@
 * RestController
 * RequestMapping
 
+* ConfigurationProperties(prefix = "spring.redis")
+
 
 ## apollo
 
@@ -24,6 +27,7 @@
 * -Denv=dev
 * EnableApolloConfig
 
+## logback
 
 ## eurake
 
@@ -32,16 +36,23 @@
 
 * StringRedisTemplate
 ```
-spring.redis.host
-spring.redis.port
-spring.redis.password
-spring.redis.database
+spring.redis.host = localhost:3306
+spring.redis.port = 6379
+spring.redis.password = 123456
+spring.redis.database = 0
 ```
 
 ## mysql
 
-* master
-* slave
+* datasource
+```
+    * spring.datasource.url = jdbc:mysql://localhost:3306/webplatform?useUnicode=true&characterEncoding=utf-8
+    * spring.datasource.username = root
+    * spring.datasource.password = root
+    * spring.datasource.driverClassName = com.mysql.jdbc.Driver
+```
+* mybatis-spring-boot-starter
+    * mybatis.mapperLocations = classpath:mapping/*.xml
 
 ## rocketmq
 

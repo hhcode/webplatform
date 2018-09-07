@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huang.mapper.UserMapper">
+    <resultMap id="BaseResultMap" type="com.huang.entity.UserEntity">
+        <result column="user_name" jdbcType="VARCHAR" property="userName"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="phone_num" jdbcType="VARCHAR" property="phoneNum"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+       user_name,
+       password,
+       phone_num,
+       create_time,
+       update_time
+    </sql>
+
+    <insert id="insert" parameterType="com.huang.entity.UserEntity">
+        INSERT INTO t_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userName != null">
+                user_name,
+            </if>
+            <if test="password != null">
+                password,
+            </if>
+            <if test="phoneNum != null">
+                phone_num,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userName != null">
+                #{userName},
+            </if>
+            <if test="password != null">
+                #{password},
+            </if>
+            <if test="phoneNum != null">
+                #{phoneNum},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="com.huang.entity.UserEntity">
+        UPDATE t_user
+        <set>
+            <trim suffixOverrides=",">
+                <if test="password != null">
+                    password = #{password},
+                </if>
+                <if test="phoneNum != null">
+                    phone_num = #{phoneNum},
+                </if>
+            </trim>
+        </set>
+        WHERE user_name = #{userName}
+    </update>
+
+    <delete id="delete" parameterType="com.huang.entity.UserEntity">
+        delete from t_user
+        WHERE user_name = #{userName}
+    </delete>
+
+    <select id="query" parameterType="com.huang.entity.UserEntity" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_user
+        where user_name = #{userName}
+    </select>
+
+</mapper>
