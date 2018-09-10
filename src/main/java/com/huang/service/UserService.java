@@ -3,6 +3,7 @@ package com.huang.service;
 import com.huang.entity.UserEntity;
 
 /**
+ * 用户操作接口类
  * @Author huangjihui
  * @Date 2018/9/7 11:02
  */
