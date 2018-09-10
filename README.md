@@ -29,6 +29,8 @@
 
 ## logback
 
+* logbak.xml
+
 ## eurake
 
 
@@ -60,6 +62,10 @@ spring.redis.database = 0
 * producter
 
 ## log aop
+
+* @Aspect
+* 自定义注解
+* 通过注解作切入点 around切面
 
 
 ## Hibernate Validator
