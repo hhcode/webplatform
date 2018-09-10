@@ -33,6 +33,15 @@
 
 ## eurake
 
+### provider
+
+* EnableDiscoveryClient
+```
+spring.application.name = WEBPLATFORM
+eureka.client.serviceUrl.defaultZone = http://ip:port/eureka/
+```
+
+### consumer
 
 ## redis
 
