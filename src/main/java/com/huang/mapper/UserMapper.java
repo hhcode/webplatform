@@ -10,7 +10,8 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface UserMapper {
     /**
-     *  查询
+     * 查询
+     *
      * @param userEntity user
      * @return
      */
@@ -18,6 +19,7 @@ public interface UserMapper {
 
     /**
      * 插入
+     *
      * @param userEntity user
      * @return
      */
@@ -25,6 +27,7 @@ public interface UserMapper {
 
     /**
      * 更新
+     *
      * @param userEntity user
      * @return
      */
@@ -32,6 +35,7 @@ public interface UserMapper {
 
     /**
      * 删除
+     *
      * @param userEntity user
      * @return
      */
