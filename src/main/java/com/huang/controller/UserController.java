@@ -1,6 +1,7 @@
 package com.huang.controller;
 
 import com.huang.aop.annotation.HttpLogger;
+import com.huang.client.ProviderClient;
 import com.huang.entity.UserEntity;
 import com.huang.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,9 @@ public class UserController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    ProviderClient providerClient;
 
     @RequestMapping(value = "/hello", method = RequestMethod.GET)
     @HttpLogger
@@ -50,5 +54,13 @@ public class UserController {
     @HttpLogger
     public void userDelete(@RequestBody UserEntity userEntity) {
         userService.userDelete(userEntity);
+    }
+
+    @GetMapping("/testFeign")
+    @HttpLogger
+    public String testFeign() {
+        String result = providerClient.hello();
+        log.info("======== {}", result);
+        return result;
     }
 }
