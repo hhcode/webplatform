@@ -33,19 +33,19 @@
 
 ## eurake
 
-### provider
-
 * EnableDiscoveryClient
 ```
 spring.application.name = WEBPLATFORM
 eureka.client.serviceUrl.defaultZone = http://ip:port/eureka/
 ```
 
-### consumer
-
 * Ribbon 负载均衡
 * @FeignClient 服务间调用
 
+
+### hystrix
+
+* 断路器 FallbackFactory
 
 ## redis
 
