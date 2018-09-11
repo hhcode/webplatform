@@ -1,6 +1,29 @@
 mybatis:
   mapperLocations: classpath:mapping/*.xml
 
+# 打开feign的断路器功能
 feign:
   hystrix:
     enabled: true
+## apollo配置备份
+bak:
+  spring:
+    application:
+      name: WEBPLATFORM
+    datasource:
+      password: huang_00
+      driverClassName: com.mysql.jdbc.Driver
+      url: jdbc:mysql://mrhuang.online:33060/webplatform?useUnicode=true&characterEncoding=utf-8
+      username: root
+    redis:
+      password: Dcappredi3
+      database: 0
+      port: 16379
+      host: mrhuang.online
+  server:
+    port: 8081
+  eureka:
+    client:
+      serviceUrl:
+        defaultZone: http://mrhuang.online:9200/eureka/
+
