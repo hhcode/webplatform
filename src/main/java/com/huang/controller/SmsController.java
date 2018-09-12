@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
+
 /**
  * @Author huangjihui
  * @Date 2018/9/11 19:19
@@ -38,14 +41,25 @@ public class SmsController {
 
     @RequestMapping("/sms/callback1")
     public void callBack1(@RequestParam(name = "from", required = false) String from, @RequestParam(name = "to", required = false) String to, @RequestParam(name = "time", required = false) String time, @RequestParam(name = "state", required = false) String state, @RequestParam(name = "msgId", required = false) String msgId, @RequestParam(name = "content", required = false) String content) {
-        log.info("callback msg : {} {} {} {} {} {}", from, to, time, state, msgId, content);
+        log.info("callback from : {} to : {} time : {} state : {} msgId : {} content : {}", from, to, time, state, msgId, content);
+    }
+
+    @RequestMapping("/sms/callback2")
+    public void callBack2(HttpServletRequest request) {
+        Map<String, String[]> map = request.getParameterMap();
+        StringBuffer sb = new StringBuffer();
+        map.entrySet().forEach(entry -> {
+            sb.append(entry.getKey()).append(" : ").append(entry.getClass()).append(" ");
+        });
+        log.info("callback msg {} ", sb.toString());
     }
 
 
     @RequestMapping("/openapi/cardsms/sendSMS.do")
-    public UcpaasSmsSendResponse testSendSms(@RequestBody UcpaasSmsSendRequest request) {
-        log.info("===== sendSms msg : {}", request.toString());
+    public UcpaasSmsSendResponse testSendSms(HttpServletRequest request) {
+        Map<String, String[]> params = request.getParameterMap();
 
+        log.info("===== sendSms msg : {}", params);
 
         try {
             Thread.sleep(1000L);
@@ -56,9 +70,9 @@ public class SmsController {
         new Thread(() -> {
             UcpaasSmsCallBackEntity callBackEntity = new UcpaasSmsCallBackEntity();
             callBackEntity.setFrom("from123456");
-            callBackEntity.setContent(request.getContent());
-            callBackEntity.setTo(request.getMsisdn());
-            callBackEntity.setMsgId(request.getMsgId());
+            callBackEntity.setContent(params.get("content")[0]);
+            callBackEntity.setTo(params.get("iccid")[0]);
+            callBackEntity.setMsgId(Integer.valueOf(params.get("msgId")[0]));
             callBackEntity.setTime(String.valueOf(System.currentTimeMillis()));
 
             RestTemplate restTemplate = new RestTemplate();
