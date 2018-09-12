@@ -39,13 +39,13 @@ public class UpaasSmsServiceImpl implements UcpaasSmsService {
     public boolean sendSms(String iccid, String msg) {
 
         UcpaasSmsSendRequest request = new UcpaasSmsSendRequest();
-        request.setMsisdn(iccid);
+        request.setIccid(iccid);
         request.setContent(msg);
         request.setMsgId(RandomUtil.getNextLong(12));
         request.setBackUrl(backUrl);
 
         String uri = serviceUri + getSysParam();
-        log.debug("send msg uri : {} request : {}", uri, request.toString());
+        log.info("send msg uri : {} request : {}", uri, request.toString());
 
         try {
             RestTemplate restTemplate = new RestTemplate();
@@ -55,7 +55,7 @@ public class UpaasSmsServiceImpl implements UcpaasSmsService {
             HttpEntity<UcpaasSmsSendRequest> formEntity = new HttpEntity<>(request, headers);
             ResponseEntity<UcpaasSmsSendResponse> resp = restTemplate.postForEntity(uri, formEntity, UcpaasSmsSendResponse.class);
 
-            log.debug("snd sms return {}", resp.getBody());
+            log.info("snd sms return {}", resp.getBody());
             if (resp.getBody().getStatus() == 0) {
                 return true;
             }

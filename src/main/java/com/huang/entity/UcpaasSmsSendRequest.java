@@ -13,9 +13,18 @@ import lombok.ToString;
 public class UcpaasSmsSendRequest {
 
     /**
+     * iccid
+     */
+    private String iccid;
+    /**
      * SIM卡号
      */
     private String msisdn;
+
+    /**
+     * imsi
+     */
+    private String imsi;
 
     /**
      * 信息内容
