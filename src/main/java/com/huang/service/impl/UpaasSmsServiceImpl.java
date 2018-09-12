@@ -1,12 +1,12 @@
 package com.huang.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.huang.entity.UcpaasSmsSendRequest;
 import com.huang.entity.UcpaasSmsSendResponse;
 import com.huang.service.UcpaasSmsService;
 import com.huang.util.RandomUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -14,11 +14,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @Author huangjihui
@@ -56,10 +51,14 @@ public class UpaasSmsServiceImpl implements UcpaasSmsService {
             HttpHeaders headers = setSysParam();
 
             HttpEntity<UcpaasSmsSendRequest> formEntity = new HttpEntity<>(request, headers);
-            ResponseEntity<UcpaasSmsSendResponse> resp = restTemplate.postForEntity(serviceUri, formEntity, UcpaasSmsSendResponse.class);
+            ResponseEntity<String> resp = restTemplate.postForEntity(serviceUri, formEntity, String.class);
+
+            log.info("return : {}", resp.getBody());
+
+            UcpaasSmsSendResponse smsResp = JSON.parseObject(resp.getBody(), UcpaasSmsSendResponse.class);
 
             log.info("snd sms return {}", resp.getBody());
-            if (resp.getBody().getStatus() == 0) {
+            if (smsResp.getStatus() == 0) {
                 return true;
             }
         } catch (Exception e) {
@@ -90,5 +89,12 @@ public class UpaasSmsServiceImpl implements UcpaasSmsService {
         return headers;
     }
 
+    public static void main(String[] args) {
+
+        long timeStamp = System.currentTimeMillis();
+        String sign = DigestUtils.md5Hex("339bd6f3bb4746189596d3fc639ddaddguaishouchongdian" + timeStamp);
+        System.out.println(timeStamp);
+        System.out.println(sign);
+    }
 
 }
