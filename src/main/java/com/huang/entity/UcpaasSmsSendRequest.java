@@ -3,7 +3,9 @@ package com.huang.entity;
 import lombok.Data;
 import lombok.ToString;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 /**
  * 云之讯发送短信请求request
@@ -13,8 +15,8 @@ import org.springframework.beans.factory.annotation.Value;
  */
 @Data
 @ToString
+@Component
 public class UcpaasSmsSendRequest {
-
 
     /**
      * 云之讯平台keyCode
