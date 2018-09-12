@@ -82,7 +82,7 @@ public class UpaasSmsServiceImpl implements UcpaasSmsService {
         HttpHeaders headers = new HttpHeaders();
         headers.set("keyCode", keyCode);
         headers.set("timeTemp", String.valueOf(timeStamp));
-        headers.set("userName", userName);
+        headers.set("user", userName);
         headers.set("sign", sign);
 
         headers.setContentType(MediaType.APPLICATION_JSON);
