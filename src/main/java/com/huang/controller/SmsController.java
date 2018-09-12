@@ -49,7 +49,7 @@ public class SmsController {
         Map<String, String[]> map = request.getParameterMap();
         StringBuffer sb = new StringBuffer();
         map.entrySet().forEach(entry -> {
-            sb.append(entry.getKey()).append(" : ").append(entry.getClass()).append(" ");
+            sb.append(entry.getKey()).append(" : ").append(entry.getValue()).append(" ");
         });
         log.info("callback msg {} ", sb.toString());
     }
