@@ -15,6 +15,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * @Author huangjihui
  * @Date 2018/9/11 19:13
@@ -44,16 +49,14 @@ public class UpaasSmsServiceImpl implements UcpaasSmsService {
         request.setMsgId(RandomUtil.getNextLong(12));
         request.setBackUrl(backUrl);
 
-        String uri = serviceUri + getSysParam();
-        log.info("send msg uri : {} request : {}", uri, request.toString());
+        log.info("send msg uri : {} request : {}", serviceUri, request.toString());
 
         try {
             RestTemplate restTemplate = new RestTemplate();
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON);
+            HttpHeaders headers = setSysParam();
 
             HttpEntity<UcpaasSmsSendRequest> formEntity = new HttpEntity<>(request, headers);
-            ResponseEntity<UcpaasSmsSendResponse> resp = restTemplate.postForEntity(uri, formEntity, UcpaasSmsSendResponse.class);
+            ResponseEntity<UcpaasSmsSendResponse> resp = restTemplate.postForEntity(serviceUri, formEntity, UcpaasSmsSendResponse.class);
 
             log.info("snd sms return {}", resp.getBody());
             if (resp.getBody().getStatus() == 0) {
@@ -67,16 +70,24 @@ public class UpaasSmsServiceImpl implements UcpaasSmsService {
     }
 
     /**
-     * 获取系统级参数
+     * 设置系统级参数
      *
      * @return
      */
-    private String getSysParam() {
-        StringBuffer sb = new StringBuffer();
+    private HttpHeaders setSysParam() {
+
         long timeStamp = System.currentTimeMillis();
         String sign = DigestUtils.md5Hex(keyCode + userName + timeStamp);
-        sb.append("?keyCode=").append(keyCode).append("&timeTemp=").append(timeStamp).append("&user=").append(userName).append("&sign=").append(sign);
-        return sb.toString();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("keyCode", keyCode);
+        headers.set("timeTemp", String.valueOf(timeStamp));
+        headers.set("userName", userName);
+        headers.set("sign", sign);
+
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        return headers;
     }
 
 
