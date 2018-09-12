@@ -26,5 +26,15 @@ public class RandomUtil {
         }
         return lon;
     }
+
+    public static Integer getNextInt(int length) {
+        StringBuffer sb = new StringBuffer();
+        sb.append("1");
+        for (int i = 1; i < length; i++) {
+            sb.append(random.nextInt(10));
+        }
+
+        return Integer.valueOf(sb.toString());
+    }
 }
 

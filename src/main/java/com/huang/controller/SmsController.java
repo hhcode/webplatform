@@ -36,6 +36,12 @@ public class SmsController {
         log.info("callback msg : {}", ucpaasSmsCallBackEntity);
     }
 
+    @RequestMapping("/sms/callback1")
+    public void callBack1(@RequestParam(name = "from", required = false) String from, @RequestParam(name = "to", required = false) String to, @RequestParam(name = "time", required = false) String time, @RequestParam(name = "state", required = false) String state, @RequestParam(name = "msgId", required = false) String msgId, @RequestParam(name = "content", required = false) String content) {
+        log.info("callback msg : {} {} {} {} {} {}", from, to, time, state, msgId, content);
+    }
+
+
     @RequestMapping("/openapi/cardsms/sendSMS.do")
     public UcpaasSmsSendResponse testSendSms(@RequestBody UcpaasSmsSendRequest request) {
         log.info("===== sendSms msg : {}", request.toString());
@@ -52,7 +58,7 @@ public class SmsController {
             callBackEntity.setFrom("from123456");
             callBackEntity.setContent(request.getContent());
             callBackEntity.setTo(request.getMsisdn());
-            callBackEntity.setMsgId(String.valueOf(request.getMsgId()));
+            callBackEntity.setMsgId(request.getMsgId());
             callBackEntity.setTime(String.valueOf(System.currentTimeMillis()));
 
             RestTemplate restTemplate = new RestTemplate();

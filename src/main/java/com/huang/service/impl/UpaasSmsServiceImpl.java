@@ -41,7 +41,7 @@ public class UpaasSmsServiceImpl implements UcpaasSmsService {
         UcpaasSmsSendRequest request = new UcpaasSmsSendRequest();
         request.setIccid(iccid);
         request.setContent(msg);
-        request.setMsgId(RandomUtil.getNextLong(12));
+        request.setMsgId(RandomUtil.getNextInt(8));
         request.setBackUrl(backUrl);
 
         log.info("send msg uri : {} request : {}", serviceUri, request.toString());
@@ -92,7 +92,9 @@ public class UpaasSmsServiceImpl implements UcpaasSmsService {
     public static void main(String[] args) {
 
         long timeStamp = System.currentTimeMillis();
-        String sign = DigestUtils.md5Hex("339bd6f3bb4746189596d3fc639ddaddguaishouchongdian" + timeStamp);
+        String code = "339bd6f3bb4746189596d3fc639ddaddguaishouchongdian" + timeStamp;
+        String sign = DigestUtils.md5Hex(code);
+        System.out.println(code);
         System.out.println(timeStamp);
         System.out.println(sign);
     }

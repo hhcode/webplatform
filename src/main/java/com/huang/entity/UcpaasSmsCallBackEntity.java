@@ -26,9 +26,13 @@ public class UcpaasSmsCallBackEntity {
      */
     private String time;
     /**
+     * 发送状态,0成功 其他失败
+     */
+    private Integer state;
+    /**
      * 唯一识别码
      */
-    private String msgId;
+    private Integer msgId;
     /**
      * 发送短信内容
      */

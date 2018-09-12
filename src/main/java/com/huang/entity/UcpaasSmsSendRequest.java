@@ -34,7 +34,7 @@ public class UcpaasSmsSendRequest {
     /**
      * 唯一识别码
      */
-    private Long msgId;
+    private Integer msgId;
 
     /**
      * 回调地址
