@@ -7,6 +7,7 @@ import com.huang.service.UcpaasSmsService;
 import com.huang.util.RandomUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -19,17 +20,18 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class UpaasSmsServiceImpl implements UcpaasSmsService {
 
+    @Autowired
+    UcpaasSmsSendRequest ucpaasSmsSendRequest;
 
     @Override
     public boolean sendSms(String iccid, String content) {
 
-        UcpaasSmsSendRequest request = new UcpaasSmsSendRequest();
-        request.setTimeStamp(System.currentTimeMillis());
-        request.setIccid(iccid);
-        request.setContent(content);
-        request.setMsgId(RandomUtil.getNextInt(8));
+        ucpaasSmsSendRequest.setTimeStamp(System.currentTimeMillis());
+        ucpaasSmsSendRequest.setIccid(iccid);
+        ucpaasSmsSendRequest.setContent(content);
+        ucpaasSmsSendRequest.setMsgId(RandomUtil.getNextInt(8));
 
-        String uri = UcpaasSmsSendRequest.getUriAndParam(request);
+        String uri = UcpaasSmsSendRequest.getUriAndParam(ucpaasSmsSendRequest);
         log.info("send msg uri : {} ", uri);
 
         try {
