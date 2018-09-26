@@ -39,4 +39,7 @@ public interface UserService {
      */
     void userDelete(UserEntity userEntity);
 
+
+    void testAOP();
+
 }

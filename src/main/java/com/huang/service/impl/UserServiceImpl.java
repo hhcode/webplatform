@@ -1,8 +1,10 @@
 package com.huang.service.impl;
 
+import com.huang.aop.annotation.HttpLogger;
 import com.huang.cache.CacheServer;
 import com.huang.entity.UserEntity;
 import com.huang.mapper.UserMapper;
+import com.huang.service.UcpaasSmsService;
 import com.huang.service.UserService;
 import com.huang.util.RedisKeyEnum;
 import com.huang.util.RedisKeyUtil;
@@ -23,6 +25,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     UserMapper userMapper;
+
+    @Autowired
+    UcpaasSmsService ucpaasSmsService;
 
     @Override
     public UserEntity userGet(UserEntity userEntity) {
@@ -64,5 +69,13 @@ public class UserServiceImpl implements UserService {
             // test redis hash
             cacheServer.delete(RedisKeyEnum.USER_HASH.getValue());
         }
+    }
+
+
+    @HttpLogger
+    @Override
+    public void testAOP() {
+        System.out.println("user ===========" + Thread.currentThread().getName() + "  " + Thread.currentThread().getId());
+        ucpaasSmsService.testAop();
     }
 }

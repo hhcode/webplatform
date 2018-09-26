@@ -6,4 +6,6 @@ package com.huang.service;
  */
 public interface UcpaasSmsService {
     boolean sendSms(String iccid, String msg);
+
+    void testAop();
 }
