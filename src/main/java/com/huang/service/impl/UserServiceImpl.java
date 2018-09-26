@@ -1,6 +1,5 @@
 package com.huang.service.impl;
 
-import com.huang.aop.annotation.HttpLogger;
 import com.huang.cache.CacheServer;
 import com.huang.entity.UserEntity;
 import com.huang.mapper.UserMapper;
@@ -8,6 +7,7 @@ import com.huang.service.UcpaasSmsService;
 import com.huang.service.UserService;
 import com.huang.util.RedisKeyEnum;
 import com.huang.util.RedisKeyUtil;
+import com.huang.util.SpringContextUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,9 +25,6 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     UserMapper userMapper;
-
-    @Autowired
-    UcpaasSmsService ucpaasSmsService;
 
     @Override
     public UserEntity userGet(UserEntity userEntity) {
@@ -72,10 +69,9 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    @HttpLogger
     @Override
     public void testAOP() {
         System.out.println("user ===========" + Thread.currentThread().getName() + "  " + Thread.currentThread().getId());
-        ucpaasSmsService.testAop();
+        SpringContextUtil.getBeanByType(UcpaasSmsService.class).testAop();
     }
 }

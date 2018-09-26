@@ -1,7 +1,6 @@
 package com.huang.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.huang.aop.annotation.HttpLogger;
 import com.huang.entity.UcpaasSmsSendRequest;
 import com.huang.entity.UcpaasSmsSendResponse;
 import com.huang.service.UcpaasSmsService;
@@ -63,7 +62,6 @@ public class UpaasSmsServiceImpl implements UcpaasSmsService {
         System.out.println(sign);
     }
 
-    @HttpLogger
     @Override
     public void testAop() {
         System.out.println("upass ===========" + Thread.currentThread().getName() + "  " + Thread.currentThread().getId());
