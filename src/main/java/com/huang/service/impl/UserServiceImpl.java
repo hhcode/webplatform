@@ -3,11 +3,9 @@ package com.huang.service.impl;
 import com.huang.cache.CacheServer;
 import com.huang.entity.UserEntity;
 import com.huang.mapper.UserMapper;
-import com.huang.service.UcpaasSmsService;
 import com.huang.service.UserService;
 import com.huang.util.RedisKeyEnum;
 import com.huang.util.RedisKeyUtil;
-import com.huang.util.SpringContextUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -72,6 +70,5 @@ public class UserServiceImpl implements UserService {
     @Override
     public void testAOP() {
         System.out.println("user ===========" + Thread.currentThread().getName() + "  " + Thread.currentThread().getId());
-        SpringContextUtil.getBeanByType(UcpaasSmsService.class).testAop();
     }
 }
