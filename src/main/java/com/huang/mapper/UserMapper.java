@@ -1,5 +1,6 @@
 package com.huang.mapper;
 
+import com.huang.annotation.MasterRepository;
 import com.huang.entity.UserEntity;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -7,7 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
  * @Author huangjihui
  * @Date 2018/9/7 11:26
  */
-@Mapper
+@MasterRepository
 public interface UserMapper {
     /**
      * 查询

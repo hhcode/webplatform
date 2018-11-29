@@ -1,7 +1,4 @@
-package com.huang.cache;/**
- * @Author huangjihui
- * @Date 2018/11/9 10:55
- */
+package com.huang.cache;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
