@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class LoggerHandler {
 
-    @Pointcut("@annotation(com.huang.aop.annotation.HttpLogger)")
+    @Pointcut("@annotation(com.huang.annotation.HttpLogger)")
     public void httpLogger() {
 
     }

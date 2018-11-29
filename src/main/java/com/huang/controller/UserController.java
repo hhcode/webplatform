@@ -1,8 +1,7 @@
 package com.huang.controller;
 
-import com.huang.aop.annotation.HttpLogger;
+import com.huang.annotation.*;
 import com.huang.client.ProviderClient;
-import com.huang.entity.IdSn;
 import com.huang.entity.UserEntity;
 import com.huang.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -10,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 
 /**
@@ -28,7 +26,7 @@ public class UserController {
     ProviderClient providerClient;
 
     @Autowired
-    ExecutorService executorService;
+    ExecutorService taskExecutorService;
 
     @RequestMapping(value = "/hello", method = RequestMethod.GET)
     @HttpLogger
@@ -79,18 +77,13 @@ public class UserController {
         log.info(request.getQueryString());
     }
 
-    @PostMapping("/testList")
-    public void testList(@RequestBody List<IdSn> idSns) {
-        log.info("========= idSns : {}", idSns);
-    }
-
     @GetMapping("/testaop")
     @HttpLogger
     public void testAop(@RequestParam(required = false) String userName) {
 
         System.out.println(Thread.currentThread().getId() + " " + Thread.currentThread().getName());
 
-        executorService.execute(() -> {
+        taskExecutorService.execute(() -> {
             userService.testAOP();
         });
 

@@ -1,6 +1,6 @@
 package com.huang.service.impl;
 
-import com.huang.cache.CacheServer;
+import com.huang.cache.SourceRedisServer;
 import com.huang.entity.UserEntity;
 import com.huang.mapper.UserMapper;
 import com.huang.service.UserService;
@@ -19,17 +19,17 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    CacheServer cacheServer;
+    SourceRedisServer sourceRedisServer;
 
     @Autowired
     UserMapper userMapper;
 
     @Override
     public UserEntity userGet(UserEntity userEntity) {
-        UserEntity user = cacheServer.getObject(RedisKeyUtil.getUserKey(userEntity.getUserName()), UserEntity.class);
+        UserEntity user = sourceRedisServer.getObject(RedisKeyUtil.getUserKey(userEntity.getUserName()), UserEntity.class);
         if (user == null) {
             user = userMapper.query(userEntity);
-            cacheServer.setObject(RedisKeyUtil.getUserKey(user.getUserName()), user);
+            sourceRedisServer.setObject(RedisKeyUtil.getUserKey(user.getUserName()), user);
         }
         return user;
     }
@@ -39,9 +39,9 @@ public class UserServiceImpl implements UserService {
         int update = userMapper.update(userEntity);
         if (update == 1) {
             UserEntity newEntity = userMapper.query(userEntity);
-            cacheServer.setObject(RedisKeyUtil.getUserKey(userEntity.getUserName()), newEntity);
+            sourceRedisServer.setObject(RedisKeyUtil.getUserKey(userEntity.getUserName()), newEntity);
             // test redis hash
-            cacheServer.setOneHashObj(RedisKeyEnum.USER_HASH.getValue(), userEntity.getUserName(), newEntity);
+            sourceRedisServer.setOneHashObj(RedisKeyEnum.USER_HASH.getValue(), userEntity.getUserName(), newEntity);
         }
     }
 
@@ -50,9 +50,9 @@ public class UserServiceImpl implements UserService {
         int insert = userMapper.insert(userEntity);
         if (insert == 1) {
             UserEntity newEntity = userMapper.query(userEntity);
-            cacheServer.setObject(RedisKeyUtil.getUserKey(userEntity.getUserName()), newEntity);
+            sourceRedisServer.setObject(RedisKeyUtil.getUserKey(userEntity.getUserName()), newEntity);
             // test redis hash
-            cacheServer.setOneHashObj(RedisKeyEnum.USER_HASH.getValue(), userEntity.getUserName(), newEntity);
+            sourceRedisServer.setOneHashObj(RedisKeyEnum.USER_HASH.getValue(), userEntity.getUserName(), newEntity);
         }
     }
 
@@ -60,9 +60,9 @@ public class UserServiceImpl implements UserService {
     public void userDelete(UserEntity userEntity) {
         int delete = userMapper.delete(userEntity);
         if (delete == 1) {
-            cacheServer.delete(RedisKeyUtil.getUserKey(userEntity.getUserName()));
+            sourceRedisServer.delete(RedisKeyUtil.getUserKey(userEntity.getUserName()));
             // test redis hash
-            cacheServer.delete(RedisKeyEnum.USER_HASH.getValue());
+            sourceRedisServer.delete(RedisKeyEnum.USER_HASH.getValue());
         }
     }
 

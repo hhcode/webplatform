@@ -6,6 +6,7 @@ feign:
   hystrix:
     enabled: true
 ## apollo配置备份
+
 bak:
   spring:
     application:
@@ -26,4 +27,14 @@ bak:
     client:
       serviceUrl:
         defaultZone: http://mrhuang.online:9200/eureka/
-
+  redis:
+    source:
+      host: mrhuang.online
+      port: 16379
+      password: Dcappredi3
+      databaseIndex: 0
+    target:
+      host: mrhuang.online
+      port: 16379
+      password: Dcappredi3
+      databaseIndex: 1
