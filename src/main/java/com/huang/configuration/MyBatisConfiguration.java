@@ -25,7 +25,7 @@ import java.util.Properties;
  * @Date 2018/11/29 16:49
  */
 @Slf4j
-//@Configuration
+@Configuration
 public class MyBatisConfiguration {
 
     @Bean(name = "masterDataSourceProperties")
@@ -38,6 +38,39 @@ public class MyBatisConfiguration {
     @ConfigurationProperties(prefix = "mysql.datasource.slave")
     public DataSourceProperties slaveDataSourceProperties() {
         return new DataSourceProperties();
+    }
+
+    @Bean("masterDataSource")
+    public DataSource masterDataSource(DataSourceProperties masterDataSourceProperties) {
+        return getDataSource(masterDataSourceProperties);
+    }
+
+    @Bean("slaveDataSource")
+    public DataSource slaveDataSource(DataSourceProperties slaveDataSourceProperties) {
+        return getDataSource(slaveDataSourceProperties);
+    }
+
+
+    @Bean(name = "masterSqlSessionFactory")
+    public SqlSessionFactory masterSqlSessionFactory(DataSource masterDataSource) {
+        return getSqlSessionFactory(masterDataSource);
+    }
+
+    @Bean(name = "slaveSqlSessionFactorySlave")
+    public SqlSessionFactory slaveSqlSessionFactory(DataSource slaveDataSource) {
+        return getSqlSessionFactory(slaveDataSource);
+    }
+
+    @Bean
+    @DependsOn(value = "masterMapperScannerConfigurer")
+    public MapperScannerConfigurer masterMapperScannerConfigurer() {
+        return getMapperScannerConfigurer("sqlSessionFactoryMaster", MasterRepository.class);
+    }
+
+    @Bean
+    @DependsOn(value = "slaveMapperScannerConfigurer")
+    public MapperScannerConfigurer slaveMapperScannerConfigurer() {
+        return getMapperScannerConfigurer("sqlSessionFactorySlave", SlaveRepository.class);
     }
 
     public DataSource getDataSource(DataSourceProperties dataSourceProperties) {
@@ -55,19 +88,9 @@ public class MyBatisConfiguration {
         }
     }
 
-    @Bean(name = "sqlSessionFactoryMaster")
-    public SqlSessionFactory sqlSessionFactoryMaster(DataSourceProperties masterDataSourceProperties) {
-        return getSqlSessionFactory(masterDataSourceProperties);
-    }
-
-    @Bean(name = "sqlSessionFactorySlave")
-    public SqlSessionFactory sqlSessionFactorySlave(DataSourceProperties slaveDataSourceProperties) {
-        return getSqlSessionFactory(slaveDataSourceProperties);
-    }
-
-    public SqlSessionFactory getSqlSessionFactory(DataSourceProperties dataSourceProperties) {
+    public SqlSessionFactory getSqlSessionFactory(DataSource dataSource) {
         SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
-        factoryBean.setDataSource(getDataSource(dataSourceProperties));
+        factoryBean.setDataSource(dataSource);
 
         ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
         try {
@@ -79,18 +102,6 @@ public class MyBatisConfiguration {
         }
     }
 
-    @Bean
-    @DependsOn(value = "sqlSessionFactoryMaster")
-    public MapperScannerConfigurer mapperScannerConfigurerMaster() {
-        return getMapperScannerConfigurer("sqlSessionFactoryMaster", MasterRepository.class);
-    }
-
-    @Bean
-    @DependsOn(value = "sqlSessionFactorySlave")
-    public MapperScannerConfigurer mapperScannerConfigurerSlave() {
-        return getMapperScannerConfigurer("sqlSessionFactorySlave", SlaveRepository.class);
-    }
-
     public MapperScannerConfigurer getMapperScannerConfigurer(String sessionFactoryBeanName, Class reponsitoryClazz) {
         MapperScannerConfigurer configurer = new MapperScannerConfigurer();
         configurer.setSqlSessionFactoryBeanName(sessionFactoryBeanName);
@@ -98,5 +109,4 @@ public class MyBatisConfiguration {
         configurer.setAnnotationClass(reponsitoryClazz);
         return configurer;
     }
-
 }

@@ -3,7 +3,6 @@ feign:
   hystrix:
     enabled: true
 ## apollo配置备份
-
 bak:
   spring:
     application:
@@ -35,3 +34,13 @@ bak:
       port: 16379
       password: Dcappredi3
       databaseIndex: 1
+  mysql:
+    datasource:
+      master:
+        url: jdbc:mysql://mrhuang.online:33060/webplatform?useUnicode=true&characterEncoding=utf-8
+        username: root
+        password: huang_00
+      slave:
+        url: jdbc:mysql://mrhuang.online:33060/webplatform?useUnicode=true&characterEncoding=utf-8
+        username: root
+        password: huang_00
