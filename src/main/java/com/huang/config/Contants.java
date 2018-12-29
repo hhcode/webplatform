@@ -7,6 +7,6 @@ package com.huang.config;
  * @Date 2018/11/29 17:20
  */
 public interface Contants {
-    String mybatisLocationResource = "classpath:mapper/*.xml";
+    String mybatisLocationResource = "classpath:mapping/*.xml";
     String mybatisBasePackage = "com.huang.mapper";
 }

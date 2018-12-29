@@ -1,6 +1,7 @@
 package com.huang.configuration;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -16,6 +17,7 @@ import redis.clients.jedis.JedisPoolConfig;
  * @Date 2018/11/9 10:35
  */
 @Configuration
+@EnableConfigurationProperties(RedisProperties.class)
 public class RedisConfiguration {
 
     @Bean(name = "sourceStringRedisTemplate")

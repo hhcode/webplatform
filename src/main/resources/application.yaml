@@ -2,6 +2,9 @@
 feign:
   hystrix:
     enabled: true
+apollo:
+  bootstrap:
+    enabled: true
 ## apollo配置备份
 bak:
   spring:

@@ -11,7 +11,7 @@ import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
+import org.springframework.context.annotation.Primary;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
 
@@ -40,37 +40,38 @@ public class MyBatisConfiguration {
         return new DataSourceProperties();
     }
 
-    @Bean("masterDataSource")
+    @Bean(name = "masterDataSource")
+    @Primary
     public DataSource masterDataSource(DataSourceProperties masterDataSourceProperties) {
         return getDataSource(masterDataSourceProperties);
     }
 
-    @Bean("slaveDataSource")
+    @Bean(name = "slaveDataSource")
     public DataSource slaveDataSource(DataSourceProperties slaveDataSourceProperties) {
         return getDataSource(slaveDataSourceProperties);
     }
 
 
     @Bean(name = "masterSqlSessionFactory")
+    @Primary
     public SqlSessionFactory masterSqlSessionFactory(DataSource masterDataSource) {
         return getSqlSessionFactory(masterDataSource);
     }
 
-    @Bean(name = "slaveSqlSessionFactorySlave")
+    @Bean(name = "slaveSqlSessionFactory")
     public SqlSessionFactory slaveSqlSessionFactory(DataSource slaveDataSource) {
         return getSqlSessionFactory(slaveDataSource);
     }
 
-    @Bean
-    @DependsOn(value = "masterMapperScannerConfigurer")
+    @Bean(name = "masterMapperScannerConfigurer")
+    @Primary
     public MapperScannerConfigurer masterMapperScannerConfigurer() {
-        return getMapperScannerConfigurer("sqlSessionFactoryMaster", MasterRepository.class);
+        return getMapperScannerConfigurer("masterSqlSessionFactory", MasterRepository.class);
     }
 
-    @Bean
-    @DependsOn(value = "slaveMapperScannerConfigurer")
+    @Bean(name = "slaveMapperScannerConfigurer")
     public MapperScannerConfigurer slaveMapperScannerConfigurer() {
-        return getMapperScannerConfigurer("sqlSessionFactorySlave", SlaveRepository.class);
+        return getMapperScannerConfigurer("slaveSqlSessionFactory", SlaveRepository.class);
     }
 
     public DataSource getDataSource(DataSourceProperties dataSourceProperties) {
