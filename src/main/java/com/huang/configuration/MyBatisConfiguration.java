@@ -8,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.mapper.MapperScannerConfigurer;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -28,39 +27,15 @@ import java.util.Properties;
 @Configuration
 public class MyBatisConfiguration {
 
-    @Bean(name = "masterDataSourceProperties")
-    @ConfigurationProperties(prefix = "mysql.datasource.master")
-    public DataSourceProperties masterDataSourceProperties() {
-        return new DataSourceProperties();
-    }
-
-    @Bean(name = "slaveDataSourceProperties")
-    @ConfigurationProperties(prefix = "mysql.datasource.slave")
-    public DataSourceProperties slaveDataSourceProperties() {
-        return new DataSourceProperties();
-    }
-
-    @Bean(name = "masterDataSource")
-    @Primary
-    public DataSource masterDataSource(DataSourceProperties masterDataSourceProperties) {
-        return getDataSource(masterDataSourceProperties);
-    }
-
-    @Bean(name = "slaveDataSource")
-    public DataSource slaveDataSource(DataSourceProperties slaveDataSourceProperties) {
-        return getDataSource(slaveDataSourceProperties);
-    }
-
-
     @Bean(name = "masterSqlSessionFactory")
     @Primary
-    public SqlSessionFactory masterSqlSessionFactory(DataSource masterDataSource) {
-        return getSqlSessionFactory(masterDataSource);
+    public SqlSessionFactory masterSqlSessionFactory(DataSourceProperties dataSourceProperties) {
+        return getSqlSessionFactory(getDataSource(dataSourceProperties,true));
     }
 
     @Bean(name = "slaveSqlSessionFactory")
-    public SqlSessionFactory slaveSqlSessionFactory(DataSource slaveDataSource) {
-        return getSqlSessionFactory(slaveDataSource);
+    public SqlSessionFactory slaveSqlSessionFactory(DataSourceProperties dataSourceProperties) {
+        return getSqlSessionFactory(getDataSource(dataSourceProperties,false));
     }
 
     @Bean(name = "masterMapperScannerConfigurer")
@@ -74,13 +49,18 @@ public class MyBatisConfiguration {
         return getMapperScannerConfigurer("slaveSqlSessionFactory", SlaveRepository.class);
     }
 
-    public DataSource getDataSource(DataSourceProperties dataSourceProperties) {
+    public DataSource getDataSource(DataSourceProperties dataSourceProperties, boolean isMaster) {
         Properties prop = new Properties();
         prop.setProperty("driverClassName", "com.mysql.jdbc.Driver");
-        prop.setProperty("url", dataSourceProperties.getUrl());
-        prop.setProperty("username", dataSourceProperties.getUsername());
-        prop.setProperty("password", dataSourceProperties.getPassword());
-
+        if (isMaster) {
+            prop.setProperty("url", dataSourceProperties.getMasterUrl());
+            prop.setProperty("username", dataSourceProperties.getMasterUsername());
+            prop.setProperty("password", dataSourceProperties.getMasterPassword());
+        } else {
+            prop.setProperty("url", dataSourceProperties.getSlaveUrl());
+            prop.setProperty("username", dataSourceProperties.getSlaveUsername());
+            prop.setProperty("password", dataSourceProperties.getSlavePassword());
+        }
         try {
             return DruidDataSourceFactory.createDataSource(prop);
         } catch (Exception e) {

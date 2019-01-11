@@ -1,5 +1,6 @@
 package com.huang.mapper;
 
+import com.huang.annotation.MasterRepository;
 import com.huang.annotation.SlaveRepository;
 import com.huang.entity.UserEntity;
 
@@ -7,7 +8,7 @@ import com.huang.entity.UserEntity;
  * @Author huangjihui
  * @Date 2018/9/7 11:26
  */
-@SlaveRepository
+@MasterRepository
 public interface UserMapper {
     /**
      * 查询
