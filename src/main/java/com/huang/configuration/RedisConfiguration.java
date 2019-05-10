@@ -17,7 +17,6 @@ import redis.clients.jedis.JedisPoolConfig;
  * @Date 2018/11/9 10:35
  */
 @Configuration
-@EnableConfigurationProperties(RedisProperties.class)
 public class RedisConfiguration {
 
     @Bean(name = "sourceStringRedisTemplate")
