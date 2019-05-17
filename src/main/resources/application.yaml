@@ -1,12 +1,12 @@
-# 打开feign的断路器功能
-feign:
-  hystrix:
-    enabled: true
-apollo:
-  bootstrap:
-    enabled: true
 ## apollo配置备份
 bak:
+# 打开feign的断路器功能
+  feign:
+    hystrix:
+      enabled: true
+  apollo:
+    bootstrap:
+      enabled: true
   spring:
     application:
       name: WEBPLATFORM
